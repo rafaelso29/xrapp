@@ -8,6 +8,7 @@ async function main(){
     const scene = await startScene(engine)
 
     engine.runRenderLoop(() => scene.render())
+    window.addEventListener("resize", () => engine.resize())
 }
 
 main()

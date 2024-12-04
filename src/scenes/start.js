@@ -1,4 +1,4 @@
-import { Scene, HemisphericLight, FreeCamera, Vector3, MeshBuilder, 
+import { Scene, HemisphericLight, FreeCamera, Vector3, MeshBuilder, SceneLoader, Scalar,
     WebXRHitTest, WebXRAnchorSystem, PointerEventTypes
 } from "babylonjs";
 const log = console.log
@@ -11,9 +11,13 @@ export async function startScene(engine){
     cam.attachControl()
 
     const dot = MeshBuilder.CreateSphere("dot", {diameter: .05}, scene)
-
+    const { meshes, animationGroups} = await SceneLoader.ImportMeshAsync("", "./models/", "lady.glb", scene)
+    
+    meshes[0].position.x = 2
+    
     const xr =await scene.createDefaultXRExperienceAsync({
-        uiOptions: { sessionMode: "immersive-ar" }
+        uiOptions: { sessionMode: "immersive-ar" },
+        optionalFeatures: true
     })
 
     const fm = xr.baseExperience.featuresManager;
@@ -28,7 +32,9 @@ export async function startScene(engine){
         }
     })
     anchorSystem.onAnchorAddedObservable.add( anchor => {
-        anchor.attachedNode = dot.clone()
+        const clone = meshes[0].clone()
+        // clone.position.x = Scalar.RandomRange(1.6, 2)
+        anchor.attachedNode = clone
     })
     scene.onPointerObservable.add( event => {
         if(lastHit && anchorSystem) anchorSystem.addAnchorPointUsingHitTestResultAsync(lastHit)

@@ -10,11 +10,15 @@ export function getLastHit(){
 export function enableHitTest(fm, scene){
     try {
         const hitTest = fm.enableFeature(WebXRHitTest, "latest")
+        const ground = scene.getMeshByName("ground")
+        if(!ground) throw new Error("Ground not found")
         const dot = MeshBuilder.CreateSphere("dot", {diameter: .05}, scene)
         hitTest.onHitTestResultObservable.add( result => {
             if(result.length){
                 lastHit = result[0]
                 result[0].transformationMatrix.decompose(dot.scaling, dot.rotationQuaternion, dot.position)
+                ground.position.y = dot.position.y - .03
+                
             }else lastHit = undefined
         })
         enabled = true

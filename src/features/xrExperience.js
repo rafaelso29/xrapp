@@ -3,6 +3,8 @@ import { enableHitTest } from "./hitTest.js";
 import { enableAnchorSystem } from "./anchorSystem.js";
 import { enableLightEstimation } from "./lightEstimation.js";
 import { enableXrStateChangeCallback } from "./xrStateChange.js";
+import { enableHandTracking } from "./handTracking.js";
+
 export async function enableXrExperience(scene){
     try {
         const xr = await scene.createDefaultXRExperienceAsync({
@@ -11,10 +13,11 @@ export async function enableXrExperience(scene){
         })    
         const fm = xr.baseExperience.featuresManager;
 
-        enableXrStateChangeCallback(xr, scene)
-        enableLightEstimation(fm, scene)      
+        // enableXrStateChangeCallback(xr, scene)
+        // enableLightEstimation(fm, scene)
         enableHitTest(fm, scene)
-        enableAnchorSystem(fm, scene)        
+        enableHandTracking(fm,  xr, scene)
+        // enableAnchorSystem(fm, scene)     
         
     } catch (error) {
         console.log(error)

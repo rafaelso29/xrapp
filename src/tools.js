@@ -18,3 +18,15 @@ export function createArGround(scene){
     ground.material = mat
     return ground
 }
+
+// animation tools
+export function playAnim(animationGroups, animName){
+    const animation = animationGroups.find(anim => anim.name === animName);
+    if(!animation)return console.log("no animation found")
+    animation.play()
+}
+export function stopAnim(animationGroups, animName){
+    const animation = animationGroups.find(anim => anim.name === animName);
+    if(!animation)return console.log("no animation found")
+    animation.stop()
+}
